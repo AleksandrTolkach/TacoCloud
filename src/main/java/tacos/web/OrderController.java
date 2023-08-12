@@ -1,6 +1,7 @@
 package tacos.web;
 
 import jakarta.validation.Valid;
+import java.util.Date;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.Errors;
@@ -35,6 +36,7 @@ public class OrderController {
     if (errors.hasErrors()) {
       return "orderForm";
     }
+    order.setPlacedAt(new Date());
     orderRepo.save(order);
     sessionStatus.setComplete();
 

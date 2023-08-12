@@ -1,6 +1,7 @@
 package tacos.web;
 
 import jakarta.validation.Valid;
+import java.util.Date;
 import java.util.List;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -65,6 +66,7 @@ public class DesignTacoController {
       return "design";
     }
 
+    taco.setCreatedAt(new Date());
     tacoOrder.addTaco(taco);
     log.info("Processing taco: {}", taco);
 
