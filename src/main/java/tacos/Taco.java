@@ -10,6 +10,7 @@ import jakarta.validation.constraints.Size;
 import java.util.Date;
 import java.util.List;
 import lombok.Data;
+import org.hibernate.annotations.CreationTimestamp;
 
 @Data
 @Entity
@@ -19,6 +20,7 @@ public class Taco {
   @GeneratedValue(strategy = GenerationType.AUTO)
   private Long id;
 
+  @CreationTimestamp
   private Date createdAt;
 
   @NotNull
