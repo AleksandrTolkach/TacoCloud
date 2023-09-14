@@ -11,9 +11,11 @@ import java.util.Date;
 import java.util.List;
 import lombok.Data;
 import org.hibernate.annotations.CreationTimestamp;
+import org.springframework.data.rest.core.annotation.RestResource;
 
 @Data
 @Entity
+@RestResource(rel = "tacos", path = "tacos")
 public class Taco {
 
   @Id
