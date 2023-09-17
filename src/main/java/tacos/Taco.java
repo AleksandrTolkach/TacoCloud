@@ -10,15 +10,19 @@ import jakarta.validation.constraints.Size;
 import java.util.Date;
 import java.util.List;
 import lombok.Data;
+import org.hibernate.annotations.CreationTimestamp;
+import org.springframework.data.rest.core.annotation.RestResource;
 
 @Data
 @Entity
+@RestResource(rel = "tacos", path = "tacos")
 public class Taco {
 
   @Id
   @GeneratedValue(strategy = GenerationType.AUTO)
   private Long id;
 
+  @CreationTimestamp
   private Date createdAt;
 
   @NotNull

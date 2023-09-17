@@ -15,6 +15,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import lombok.Data;
+import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.validator.constraints.CreditCardNumber;
 
 @Data
@@ -26,6 +27,7 @@ public class TacoOrder implements Serializable {
   @Id
   @GeneratedValue(strategy = GenerationType.AUTO)
   private Long id;
+  @CreationTimestamp
   private Date placedAt;
 
   @NotBlank(message = "Delivery name is required")
