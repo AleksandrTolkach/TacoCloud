@@ -1,10 +1,12 @@
-package tacos.secutity;
+package tacos.security;
 
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configurers.oauth2.server.resource.OAuth2ResourceServerConfigurer;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -39,7 +41,13 @@ public class SecurityConfig {
         .csrf().disable()
         .authorizeHttpRequests(authorizeHttpRequest ->
             authorizeHttpRequest.requestMatchers("/design", "/orders").hasRole("USER")
-                .requestMatchers("/", "/**").permitAll())
+                .requestMatchers(HttpMethod.POST, "/api/ingredients")
+                .hasAuthority("SCOPE_writeIngredients")
+                .requestMatchers(HttpMethod.DELETE, "/api/ingredients/{id}")
+                .hasAuthority("SCOPE_deleteIngredients")
+                .requestMatchers("/", "/**").permitAll()
+                .requestMatchers(HttpMethod.GET, "/orders")
+                .hasAuthority("SCOPE_readOrders"))
         .formLogin(formLogin -> formLogin.loginPage("/login")
             .loginProcessingUrl("/auth")
             .usernameParameter("usr")
@@ -47,6 +55,7 @@ public class SecurityConfig {
             .defaultSuccessUrl("/design", true))
         .logout((httpSecurityLogoutConfigurer -> httpSecurityLogoutConfigurer
             .logoutSuccessUrl("/")))
+        .oauth2ResourceServer(OAuth2ResourceServerConfigurer::jwt)
         .build();
   }
 }
