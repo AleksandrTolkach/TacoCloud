@@ -16,8 +16,12 @@ public class SecurityConfig {
   public SecurityFilterChain defaultSecurityFilterChain(HttpSecurity http)
       throws Exception {
     return http
+        .cors().disable()
+        .csrf().disable()
         .authorizeHttpRequests(authorizeRequests ->
-            authorizeRequests.anyRequest().authenticated()
+            authorizeRequests
+                .antMatchers("/oauth2/authorize**").permitAll()
+                .anyRequest().authenticated()
         )
         .formLogin()
         .and().build();

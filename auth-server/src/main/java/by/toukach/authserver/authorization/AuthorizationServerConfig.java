@@ -37,6 +37,7 @@ public class AuthorizationServerConfig {
   public SecurityFilterChain authorizationServerSecurityFilterChain(HttpSecurity http) throws Exception {
     OAuth2AuthorizationServerConfiguration.applyDefaultSecurity(http);
     return http
+        .cors().and().csrf().disable()
         .formLogin(Customizer.withDefaults())
         .build();
   }
@@ -54,9 +55,9 @@ public class AuthorizationServerConfig {
             .authorizationGrantType(AuthorizationGrantType.REFRESH_TOKEN)
             .redirectUri(
                 "http://127.0.0.1:9090/login/oauth2/code/taco-admin-client")
+            .redirectUri("http://127.0.0.1:9090/authorized")
             .scope("writeIngredients")
             .scope("deleteIngredients")
-            .scope("readOrders")
             .scope(OidcScopes.OPENID)
             .clientSettings(ClientSettings.builder().requireAuthorizationConsent(true).build())
             .build();
@@ -65,7 +66,9 @@ public class AuthorizationServerConfig {
 
   @Bean
   public ProviderSettings providerSettings() {
-    return ProviderSettings.builder().build();
+    return ProviderSettings.builder()
+        .issuer("http://127.0.0.1:9000")
+        .build();
   }
 
   @Bean
