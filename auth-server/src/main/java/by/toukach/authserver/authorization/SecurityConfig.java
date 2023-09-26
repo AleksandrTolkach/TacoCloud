@@ -1,40 +1,34 @@
 package by.toukach.authserver.authorization;
 
-import by.toukach.authserver.data.UserRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.AuthenticationProvider;
+import org.springframework.security.config.Customizer;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 
-@Configuration
+@EnableWebSecurity
 public class SecurityConfig {
 
+  @Autowired
+  private AuthenticationProvider authenticationProvider;
+
   @Bean
-  public SecurityFilterChain defaultSecurityFilterChain(HttpSecurity http)
-      throws Exception {
-    return http
-        .cors().disable()
-        .csrf().disable()
-        .authorizeHttpRequests(authorizeRequests ->
-            authorizeRequests
-                .antMatchers("/oauth2/authorize**").permitAll()
-                .anyRequest().authenticated()
+  SecurityFilterChain defaultSecurityFilterChain(HttpSecurity http) throws Exception {
+    http.authorizeRequests(authorizeRequests ->
+            authorizeRequests.anyRequest().authenticated()
         )
-        .formLogin()
-        .and().build();
+        .formLogin(Customizer.withDefaults());
+    return http.build();
   }
 
-  @Bean
-  public UserDetailsService userDetailsService(UserRepository repository) {
-    return repository::findByUsername;
+  @Autowired
+  public void bindAuthenticationProvider(AuthenticationManagerBuilder authenticationManagerBuilder) {
+    authenticationManagerBuilder
+        .authenticationProvider(authenticationProvider);
   }
-
-  @Bean
-  public PasswordEncoder passwordEncoder() {
-    return new BCryptPasswordEncoder();
-  }
-
 }

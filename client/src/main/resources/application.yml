@@ -7,25 +7,26 @@ spring:
   security:
     oauth2:
       client:
-        # end::provider_config_0[]
         registration:
           taco-admin-client:
-            provider: tacocloud
+            provider: spring
             client-id: taco-admin-client
             client-secret: secret
             authorization-grant-type: authorization_code
-            redirect-uri: "http://127.0.0.1:9090/login/oauth2/code/taco-admin-client"
-            scope: writeIngredients,deleteIngredients,openid
-        # end::client_config[]
-        # tag::provider_config[]
+            redirect-uri: "http://127.0.0.1:9090/login/oauth2/code/{registrationId}"
+            scope: openid
+            client-name: taco-admin-client
+          api-client-authorization-code:
+            provider: spring
+            client-id: taco-admin-client
+            client-secret: secret
+            authorization-grant-type: authorization_code
+            redirect-uri: "http://127.0.0.1:9090/authorized"
+            scope: writeIngredients
+            client-name: taco-admin-client
         provider:
-          tacocloud:
-            issuer-uri: http://127.0.0.1:9000
-            authorization-uri: http://127.0.0.1:9000/oauth2/authorize
-            token-uri: http://127.0.0.1:9000/oauth2/token
-            jwt-set-uri: http://127.0.0.1:9000/oauth2/jwks
-            user-info-uri: http://127.0.0.1:9000/userinfo
-            user-name-attribute: sub
+          spring:
+            issuer-uri: http://localhost:9000
 # end::provider_config[]
 logging:
   level:

@@ -34,12 +34,11 @@ public class AuthorizationServerConfig {
 
   @Bean
   @Order(Ordered.HIGHEST_PRECEDENCE)
-  public SecurityFilterChain authorizationServerSecurityFilterChain(HttpSecurity http) throws Exception {
+  public SecurityFilterChain authServerSecurityFilterChain(HttpSecurity http) throws Exception {
+    http.cors().and().csrf().disable();
     OAuth2AuthorizationServerConfiguration.applyDefaultSecurity(http);
-    return http
-        .cors().and().csrf().disable()
-        .formLogin(Customizer.withDefaults())
-        .build();
+
+    return http.formLogin(Customizer.withDefaults()).build();
   }
 
   @Bean
@@ -49,15 +48,14 @@ public class AuthorizationServerConfig {
         RegisteredClient.withId(UUID.randomUUID().toString())
             .clientId("taco-admin-client")
             .clientSecret(passwordEncoder.encode("secret"))
-            .clientAuthenticationMethod(
-                ClientAuthenticationMethod.CLIENT_SECRET_BASIC)
+            .clientAuthenticationMethod(ClientAuthenticationMethod.CLIENT_SECRET_BASIC)
             .authorizationGrantType(AuthorizationGrantType.AUTHORIZATION_CODE)
-            .authorizationGrantType(AuthorizationGrantType.REFRESH_TOKEN)
-            .redirectUri(
-                "http://127.0.0.1:9090/login/oauth2/code/taco-admin-client")
+            .authorizationGrantType(AuthorizationGrantType.PASSWORD)
+//            .authorizationGrantType(AuthorizationGrantType.REFRESH_TOKEN)
+            .redirectUri("http://127.0.0.1:9090/login/oauth2/code/taco-admin-client")
             .redirectUri("http://127.0.0.1:9090/authorized")
             .scope("writeIngredients")
-            .scope("deleteIngredients")
+//            .scope("deleteIngredients")
             .scope(OidcScopes.OPENID)
             .clientSettings(ClientSettings.builder().requireAuthorizationConsent(true).build())
             .build();
@@ -67,7 +65,7 @@ public class AuthorizationServerConfig {
   @Bean
   public ProviderSettings providerSettings() {
     return ProviderSettings.builder()
-        .issuer("http://127.0.0.1:9000")
+        .issuer("http://localhost:9000")
         .build();
   }
 
