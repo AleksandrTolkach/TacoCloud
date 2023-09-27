@@ -1,4 +1,4 @@
-package by.toukach.client.dto;
+package by.toukach.tacoclient.dto;
 
 import lombok.Data;
 

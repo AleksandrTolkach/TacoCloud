@@ -1,34 +1,37 @@
 package by.toukach.authserver.authorization;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import by.toukach.authserver.data.UserRepository;
 import org.springframework.context.annotation.Bean;
-import org.springframework.security.authentication.AuthenticationProvider;
-import org.springframework.security.config.Customizer;
-import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 
-@EnableWebSecurity
+@Configuration
 public class SecurityConfig {
 
-  @Autowired
-  private AuthenticationProvider authenticationProvider;
-
   @Bean
-  SecurityFilterChain defaultSecurityFilterChain(HttpSecurity http) throws Exception {
-    http.authorizeRequests(authorizeRequests ->
+  public SecurityFilterChain defaultSecurityFilterChain(HttpSecurity http)
+      throws Exception {
+    return http
+        .cors().and().csrf().disable()
+        .authorizeHttpRequests(authorizeRequests ->
             authorizeRequests.anyRequest().authenticated()
         )
-        .formLogin(Customizer.withDefaults());
-    return http.build();
+        .formLogin()
+        .and().build();
   }
 
-  @Autowired
-  public void bindAuthenticationProvider(AuthenticationManagerBuilder authenticationManagerBuilder) {
-    authenticationManagerBuilder
-        .authenticationProvider(authenticationProvider);
+  @Bean
+  public UserDetailsService userDetailsService(UserRepository repository) {
+    return repository::findByUsername;
   }
+
+  @Bean
+  public PasswordEncoder passwordEncoder() {
+    return new BCryptPasswordEncoder();
+  }
+
 }

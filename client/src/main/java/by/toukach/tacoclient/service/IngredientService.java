@@ -1,6 +1,6 @@
-package by.toukach.client.service;
+package by.toukach.tacoclient.service;
 
-import by.toukach.client.dto.Ingredient;
+import by.toukach.tacoclient.dto.Ingredient;
 
 public interface IngredientService {
 
