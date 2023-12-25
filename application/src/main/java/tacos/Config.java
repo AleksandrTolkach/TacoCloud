@@ -1,12 +1,17 @@
 package tacos;
 
+import com.fasterxml.jackson.databind.JsonSerializer;
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.amqp.support.converter.Jackson2JsonMessageConverter;
-import org.springframework.amqp.support.converter.SmartMessageConverter;
+import org.apache.kafka.clients.producer.ProducerConfig;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.kafka.core.DefaultKafkaProducerFactory;
+import org.springframework.kafka.core.KafkaTemplate;
+import org.springframework.kafka.core.ProducerFactory;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import tacos.Ingredient.Type;
 import tacos.data.IngredientRepository;
@@ -61,10 +66,5 @@ public class Config {
           lettuce, salsa));
       tacoRepo.save(taco3);
     };
-  }
-
-  @Bean
-  public SmartMessageConverter smartMessageConverter() {
-    return new Jackson2JsonMessageConverter();
   }
 }

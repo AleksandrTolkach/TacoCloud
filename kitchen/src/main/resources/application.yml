@@ -1,2 +1,14 @@
+spring:
+  kafka:
+    bootstrap-servers:
+      - localhost:9092
+    template:
+      default-topic: tacocloud.orders.topic
+    consumer:
+      value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      group-id: tacocloud_kitchen
+      properties:
+        spring.json.trusted.packages: tacos
+
 server:
   port: 8081
