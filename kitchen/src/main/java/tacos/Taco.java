@@ -1,4 +1,4 @@
-package by.toukach.kitchen;
+package tacos;
 
 import java.util.Date;
 import java.util.List;

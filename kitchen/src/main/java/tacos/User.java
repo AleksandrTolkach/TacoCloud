@@ -1,4 +1,4 @@
-package by.toukach.kitchen;
+package tacos;
 
 import lombok.AccessLevel;
 import lombok.Data;

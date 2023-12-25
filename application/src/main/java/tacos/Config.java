@@ -2,6 +2,8 @@ package tacos;
 
 import java.util.Arrays;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.amqp.support.converter.Jackson2JsonMessageConverter;
+import org.springframework.amqp.support.converter.SmartMessageConverter;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -44,7 +46,7 @@ public class Config {
       Taco taco1 = new Taco();
       taco1.setName("Carnivore");
       taco1.setIngredients(Arrays.asList(flourTortilla, groundBeef, carnitas,
-          sourCream, salsa,cheddar));
+          sourCream, salsa, cheddar));
       tacoRepo.save(taco1);
 
       Taco taco2 = new Taco();
@@ -59,5 +61,10 @@ public class Config {
           lettuce, salsa));
       tacoRepo.save(taco3);
     };
+  }
+
+  @Bean
+  public SmartMessageConverter smartMessageConverter() {
+    return new Jackson2JsonMessageConverter();
   }
 }

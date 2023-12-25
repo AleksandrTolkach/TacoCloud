@@ -1,4 +1,4 @@
-package by.toukach.kitchen;
+package tacos;
 
 import java.io.Serializable;
 import java.util.ArrayList;

@@ -12,15 +12,15 @@
   <groupId>by.toukach</groupId>
   <artifactId>kitchen</artifactId>
   <version>0.0.1-SNAPSHOT</version>
-  <name>kitchen</name>
-  <description>kitchen</description>
+  <name>tacos</name>
+  <description>tacos</description>
   <properties>
     <java.version>17</java.version>
   </properties>
   <dependencies>
     <dependency>
       <groupId>org.springframework.boot</groupId>
-      <artifactId>spring-boot-starter-artemis</artifactId>
+      <artifactId>spring-boot-starter-amqp</artifactId>
     </dependency>
     <dependency>
       <groupId>org.springframework.boot</groupId>

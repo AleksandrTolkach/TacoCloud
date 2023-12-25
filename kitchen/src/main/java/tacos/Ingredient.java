@@ -1,4 +1,4 @@
-package by.toukach.kitchen;
+package tacos;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
