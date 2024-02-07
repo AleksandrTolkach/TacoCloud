@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import tacos.TacoOrder;
 import tacos.data.OrderRepository;
+import tacos.integration.FileWriterGateway;
 import tacos.messaging.OrderMessagingService;
 
 @RestController
@@ -19,17 +20,21 @@ public class OrderApiController {
 
   private OrderRepository orderRepository;
   private OrderMessagingService messagingService;
+  private FileWriterGateway fileWriterGateway;
 
   public OrderApiController(OrderRepository orderRepository,
-      OrderMessagingService messagingService) {
+      OrderMessagingService messagingService, FileWriterGateway fileWriterGateway) {
     this.orderRepository = orderRepository;
     this.messagingService = messagingService;
+    this.fileWriterGateway = fileWriterGateway;
   }
 
   @PostMapping(consumes = "application/json")
   @ResponseStatus(HttpStatus.CREATED)
   public TacoOrder postOrder(@RequestBody TacoOrder order) {
     messagingService.sendOrder(order);
-    return orderRepository.save(order);
+    order = orderRepository.save(order);
+    fileWriterGateway.writeToFile("log.txt", "Order " + order.getId() + " saved");
+    return order;
   }
 }
