@@ -1,9 +1,13 @@
 package tacos.data;
 
-import java.util.List;
-import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.repository.reactive.ReactiveCrudRepository;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 import tacos.Ingredient;
 
-public interface IngredientRepository extends CrudRepository<Ingredient, String> {
-  List<Ingredient> findAll();
+public interface IngredientRepository extends ReactiveCrudRepository<Ingredient, String> {
+
+  Mono<Ingredient> findBySlug(String slug);
+
+  Flux<Ingredient> findAll();
 }

@@ -8,15 +8,13 @@ CREATE TABLE IF NOT EXISTS Taco_Order (
     cc_number VARCHAR(16) NOT NULL,
     cc_expiration VARCHAR(5) NOT NULL,
     cc_cvv VARCHAR(3) NOT NULL,
-    placed_at TIMESTAMP NOT NULL
+    tacos_ids array
 );
 
 CREATE TABLE IF NOT EXISTS Taco (
     id IDENTITY,
     name VARCHAR(50) NOT NULL,
-    taco_order BIGINT NOT NULL,
-    taco_order_key BIGINT NOT NULL,
-    created_at TIMESTAMP NOT NULL
+    ingredient_ids array
 );
 
 CREATE TABLE IF NOT EXISTS Ingredient_Ref (
@@ -26,7 +24,8 @@ CREATE TABLE IF NOT EXISTS Ingredient_Ref (
 );
 
 CREATE TABLE IF NOT EXISTS Ingredient (
-    id VARCHAR(4) NOT NULL,
+    id identity,
+    slug VARCHAR(4) NOT NULL,
     name VARCHAR(25) NOT NULL,
     type VARCHAR(10) NOT NULL
 );

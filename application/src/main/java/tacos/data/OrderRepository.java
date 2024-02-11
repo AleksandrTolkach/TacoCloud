@@ -1,11 +1,7 @@
 package tacos.data;
 
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.repository.reactive.ReactiveCrudRepository;
 import tacos.TacoOrder;
 
-public interface OrderRepository extends CrudRepository<TacoOrder, Long> {
-
-  Page<TacoOrder> findAllBy(PageRequest pageRequest);
+public interface OrderRepository extends ReactiveCrudRepository<TacoOrder, Long> {
 }

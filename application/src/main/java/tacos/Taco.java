@@ -1,40 +1,31 @@
 package tacos;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.ManyToMany;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import lombok.Data;
-import org.hibernate.annotations.CreationTimestamp;
+import lombok.NoArgsConstructor;
+import lombok.NonNull;
+import org.springframework.data.annotation.Id;
 import org.springframework.data.rest.core.annotation.RestResource;
 
 @Data
-@Entity
+@NoArgsConstructor
 @RestResource(rel = "tacos", path = "tacos")
 public class Taco {
 
   @Id
-  @GeneratedValue(strategy = GenerationType.AUTO)
   private Long id;
 
-  @CreationTimestamp
-  private Date createdAt;
-
-  @NotNull
-  @Size(min = 5, message = "Name must be at least 5 characters long")
+  @NonNull
   private String name;
 
-  @NotNull
-  @Size(min = 1, message = "You must choose at least 1 ingredient")
-  @ManyToMany
-  private List<Ingredient> ingredients;
+  private Set<Long> ingredients = new HashSet<>();
 
   public void addIngredient(Ingredient ingredient) {
-    this.ingredients.add(ingredient);
+    this.ingredients.add(ingredient.getId());
   }
 }
